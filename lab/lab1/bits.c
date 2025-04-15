@@ -142,6 +142,10 @@ NOTES:
  */
 int isAsciiDigit(int x) {
   return !((x + (~0x30 + 1)) >> 31) & !((0x39 + (~x + 1)) >> 31);
+  // 使用位运算判断x是否在ASCII码范围0x30到0x39之间
+  // (x + (~0x30 + 1)) >> 31: 计算x是否大于或等于0x30，若x>=0x30，结果为0（表示无符号数是正数），否则为1
+  // (0x39 + (~x + 1)) >> 31: 计算x是否小于或等于0x39，若x<=0x39，结果为0（表示无符号数是正数），否则为1
+  // 通过位运算的方式将两者结果结合，保证x在范围[0x30, 0x39]之间时返回1，否则返回0
 }
 /* 
  * anyEvenBit - return 1 if any even-numbered bit in word set to 1
@@ -163,6 +167,10 @@ int anyEvenBit(int x) {
  */
 int copyLSB(int x) {
   return x << 31 >> 31;
+  // 将x的符号位复制到所有位上，返回结果
+  // x << 31: 将x的最低有效位左移31位，得到一个以符号位为基础的值
+  // x >> 31: 右移31位，将符号位（最高位）扩展到所有低位，结果是一个由符号位填充的值
+  // 这样最终的结果就是将x的符号位扩展到整个32位
 }
 /* 
  * leastBitPos - return a mask that marks the position of the
@@ -173,7 +181,7 @@ int copyLSB(int x) {
  *   Rating: 2 
  */
 int leastBitPos(int x) {
-  return x & (~x + 1);
+  return x & (~x + 1); // 使用位运算提取最低位的 1
 }
 /* 
  * divpwr2 - Compute x/(2^n), for 0 <= n <= 30
